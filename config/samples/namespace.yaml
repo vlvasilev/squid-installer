@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app: elm
+    edgelm.sap.com/product: edgelm
+    istio-injection: enabled
+    kubernetes.io/metadata.name: edgelm
+  name: squid-test

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squid-installer
+  labels:
+    edgelm.sap.com/product: edgelm
+    app.kubernetes.io/part-of: squid-installer
+spec:
+  selector:
+    matchLabels:
+      name: squid-installer
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: squid-installer
+      labels:
+        name: squid-installer
+    spec:
+      securityContext:
+        runAsNonRoot: true
+       
+      containers:
+      # - image: columbus.docker.repositories.sap.ondemand.com/com.sap.edgelm/squid-installer:latest
+      - image: hisshadow85/squid-installer:latest
+        name: squid-installer
+        imagePullPolicy: Always
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - "ALL"
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+            ephemeral-storage: 300Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      serviceAccountName: squid-installer
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+      - name: docker-registry-secret

@@ -1,0 +1,14 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: squid-installer
+  labels:
+    edgelm.sap.com/product: edgelm
+subjects:
+  - kind: ServiceAccount
+    name: squid-installer
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: squid-installer
+  apiGroup: rbac.authorization.k8s.io
